@@ -1,9 +1,9 @@
-with pg_bench as (
-	select 'PG' as pos
+with first_base_bench as (
+	select '1B' as pos
 		,players."proj_fantasy_pts" as proj_benchmark_pts
 		,DENSE_RANK() over (order by players."proj_fantasy_pts" desc) as rank_by_proj
 	from "analysis"."dim_players" players
-	where players."pos_pg" = 1
+	where players."pos_1b" = 1
 	),
 	
 sg_bench as (

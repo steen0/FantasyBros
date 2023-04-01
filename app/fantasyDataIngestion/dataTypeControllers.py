@@ -18,69 +18,67 @@ class fieldProcessing:
         self.endpoint = endpoint
 
         # List of all fantasyPros-related basketball endpoints that are available
-        self.allFantasyBasketballFields = [
-            "allPlayers",
-            "pointGuards",
-            "shootingGuards",
-            "smallForwards",
-            "powerForwards",
-            "centers",
-            "guards",
-            "forwards",
+        self.allFantasyBaseballFields = [
+            "firstBase",
+            "secondBase",
+            "thirdBase",
+            "shortStop",
+            "catcher",
+            "outfield",
+            "startPitcher",
+            "reliefPitcher",
+            "designatedHit",
+        ]
+
+        self.hitters = [
+            "firstBase",
+            "secondBase",
+            "thirdBase",
+            "shortStop",
+            "catcher",
+            "outfield",
+            "designatedHit",
+        ]
+
+        self.pitchers = [
+            "startPitcher",
+            "reliefPitcher",
         ]
 
         # List of all fields available in scraped dataframes
         self.fields = {
-            "Player": {
-                "type": self.allFantasyBasketballFields,
-                "dataType": VARCHAR(100),
-            },
-            "Team": {"type": self.allFantasyBasketballFields, "dataType": VARCHAR(100)},
-            "PTS": {"type": self.allFantasyBasketballFields, "dataType": FLOAT()},
-            "REB": {"type": self.allFantasyBasketballFields, "dataType": FLOAT()},
-            "AST": {"type": self.allFantasyBasketballFields, "dataType": FLOAT()},
-            "BLK": {"type": self.allFantasyBasketballFields, "dataType": FLOAT()},
-            "STL": {"type": self.allFantasyBasketballFields, "dataType": FLOAT()},
-            "FG%": {"type": self.allFantasyBasketballFields, "dataType": FLOAT()},
-            "FT%": {"type": self.allFantasyBasketballFields, "dataType": FLOAT()},
-            "3PM": {"type": self.allFantasyBasketballFields, "dataType": FLOAT()},
-            "GP": {"type": self.allFantasyBasketballFields, "dataType": FLOAT()},
-            "MIN": {"type": self.allFantasyBasketballFields, "dataType": FLOAT()},
-            "TO": {"type": self.allFantasyBasketballFields, "dataType": FLOAT()},
-            # ProBasketballReference only fields
-            "Rk": {"type": "proBasketballRefStats", "dataType": VARCHAR(100)},
-            "Player": {"type": "proBasketballRefStats", "dataType": VARCHAR(100)},
-            "Pos": {"type": "proBasketballRefStats", "dataType": VARCHAR(100)},
-            "Age": {"type": "proBasketballRefStats", "dataType": VARCHAR(2)},
-            "Tm": {"type": "proBasketballRefStats", "dataType": VARCHAR(3)},
-            "G": {"type": "proBasketballRefStats", "dataType": INTEGER()},
-            "GS": {"type": "proBasketballRefStats", "dataType": INTEGER()},
-            "MP": {"type": "proBasketballRefStats", "dataType": FLOAT()},
-            "FG": {"type": "proBasketballRefStats", "dataType": FLOAT()},
-            "FGA": {"type": "proBasketballRefStats", "dataType": FLOAT()},
-            "FG%": {"type": "proBasketballRefStats", "dataType": FLOAT()},
-            "3P": {"type": "proBasketballRefStats", "dataType": FLOAT()},
-            "3PA": {"type": "proBasketballRefStats", "dataType": FLOAT()},
-            "3P%": {"type": "proBasketballRefStats", "dataType": FLOAT()},
-            "2P": {"type": "proBasketballRefStats", "dataType": FLOAT()},
-            "2PA": {"type": "proBasketballRefStats", "dataType": FLOAT()},
-            "2P%": {"type": "proBasketballRefStats", "dataType": FLOAT()},
-            "eFG%": {"type": "proBasketballRefStats", "dataType": FLOAT()},
-            "FT": {"type": "proBasketballRefStats", "dataType": FLOAT()},
-            "FTA": {"type": "proBasketballRefStats", "dataType": FLOAT()},
-            "FT%": {"type": "proBasketballRefStats", "dataType": FLOAT()},
-            "ORB": {"type": "proBasketballRefStats", "dataType": FLOAT()},
-            "DRB": {"type": "proBasketballRefStats", "dataType": FLOAT()},
-            "TRB": {"type": "proBasketballRefStats", "dataType": FLOAT()},
-            "AST": {"type": "proBasketballRefStats", "dataType": FLOAT()},
-            "STL": {"type": "proBasketballRefStats", "dataType": FLOAT()},
-            "BLK": {"type": "proBasketballRefStats", "dataType": FLOAT()},
-            "TOV": {"type": "proBasketballRefStats", "dataType": FLOAT()},
-            "PF": {"type": "proBasketballRefStats", "dataType": FLOAT()},
-            "PTS": {"type": "proBasketballRefStats", "dataType": FLOAT()},
-            # Only ESPN fields
-            # "fantasy_team_name": {"type": ["espnLeague"], "dataType": VARCHAR(100)},
-            # "owner_name": {"type": ["espnLeague"], "dataType": VARCHAR(100)},
+            # All Players
+            "VBR": {"type": self.allFantasyBaseballFields, "dataType": INTEGER()},
+            "Player": {"type": self.allFantasyBaseballFields, "dataType": VARCHAR(200)},
+            "Team": {"type": self.allFantasyBaseballFields, "dataType": VARCHAR(10)},
+            "ROST%": {"type": self.allFantasyBaseballFields, "dataType": VARCHAR(10)},
+            "H": {"type": self.allFantasyBaseballFields, "dataType": FLOAT()},
+            "BB": {"type": self.allFantasyBaseballFields, "dataType": FLOAT()},
+            "HR": {"type": self.allFantasyBaseballFields, "dataType": FLOAT()},
+            # Hitters Only
+            "AB": {"type": self.hitters, "dataType": FLOAT()},
+            "R": {"type": self.hitters, "dataType": FLOAT()},
+            "RBI": {"type": self.hitters, "dataType": FLOAT()},
+            "SB": {"type": self.hitters, "dataType": FLOAT()},
+            "AVG": {"type": self.hitters, "dataType": FLOAT()},
+            "OBP": {"type": self.hitters, "dataType": FLOAT()},
+            "2B": {"type": self.hitters, "dataType": FLOAT()},
+            "3B": {"type": self.hitters, "dataType": FLOAT()},
+            "SO": {"type": self.hitters, "dataType": FLOAT()},
+            "SLG": {"type": self.hitters, "dataType": FLOAT()},
+            "OPS": {"type": self.hitters, "dataType": FLOAT()},
+            # Pitchers Only
+            "IP": {"type": self.pitchers, "dataType": FLOAT()},
+            "K": {"type": self.pitchers, "dataType": FLOAT()},
+            "W": {"type": self.pitchers, "dataType": FLOAT()},
+            "SV": {"type": self.pitchers, "dataType": FLOAT()},
+            "ERA": {"type": self.pitchers, "dataType": FLOAT()},
+            "WHIP": {"type": self.pitchers, "dataType": FLOAT()},
+            "ER": {"type": self.pitchers, "dataType": FLOAT()},
+            "G": {"type": self.pitchers, "dataType": FLOAT()},
+            "GS": {"type": self.pitchers, "dataType": FLOAT()},
+            "L": {"type": self.pitchers, "dataType": FLOAT()},
+            "CG": {"type": self.pitchers, "dataType": FLOAT()},
         }
 
         # Running datatype parser function on endpoint of interest

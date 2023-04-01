@@ -59,7 +59,7 @@ basketballPlayerValuations = BashOperator(
 # Setting task order for ELT workflow
 (
     scrapeFantasyProsData
-    >> loadBasketballPlayers
-    >> [loadBasketballPlayerHistory, basketballPlayerBenchmarks]
-    >> basketballPlayerValuations
+    # >> loadBasketballPlayers
+    # >> [loadBasketballPlayerHistory, basketballPlayerBenchmarks]
+    # >> basketballPlayerValuations
 )
