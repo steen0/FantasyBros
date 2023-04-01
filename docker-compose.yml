@@ -34,7 +34,7 @@ x-airflow-common:
       condition: service_healthy
 
 services:
-  postgres-bb-db:
+  postgres-base-db:
     image: postgres:13
     environment:
       - POSTGRES_USER=${POSTGRES_USER}
@@ -42,7 +42,7 @@ services:
       - POSTGRES_DB=${POSTGRES_DB}
     volumes:
       - postgres-bb-db-volume:/var/lib/postgresql/data
-      - ./initdb-nba.sql:/docker-entrypoint-initdb.d/initdb-nba.sql
+      - ./initdb.sql:/docker-entrypoint-initdb.d/initdb.sql
     healthcheck:
       test: ["CMD", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
       interval: 5s
@@ -51,19 +51,6 @@ services:
       - "5431:5432"
     restart: always
 
-
-  bb-dashboard:
-      image: metabase/metabase
-      container_name: bb-dashboard
-      environment:
-          - MB_DB_TYPE=postgres
-          - MB_DB_DBNAME=${POSTGRES_DB}
-          - MB_DB_PORT=${POSTGRES_PORT}
-          - MB_DB_USER=${POSTGRES_USER}
-          - MB_DB_PASS=${POSTGRES_PASSWORD}
-          - MB_DB_HOST=${POSTGRES_HOST}
-      ports:
-          - "3000:3000"
   
   postgres:
     image: postgres:13

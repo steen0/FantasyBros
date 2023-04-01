@@ -19,9 +19,9 @@ class webScraper:
 
         self.engine = createEngine()
 
-    async def getBasketballProjections(self, pos: str):
+    async def getBaseballProjections(self, pos: str):
 
-        fProsUrl = f"https://www.fantasypros.com/nba/projections/avg-ros-{pos}.php"
+        fProsUrl = f"https://www.fantasypros.com/mlb/projections/ros-{pos}.php"
 
         try:
             playersDf = pd.read_html(fProsUrl)[0]
@@ -29,23 +29,8 @@ class webScraper:
                 playersDf["Player"].str.split("\(").str[1].str.split(" \-").str[0]
             )
             playersDf["Player"] = playersDf["Player"].str.split(" \(").str[0]
-
-            return playersDf
-
-        except Exception as e:
-            print("Webscraping error:", str(e))
-
-    async def getProBasketballReferenceStats(self, year: str):
-
-        proBasketballRefUrl = (
-            f"https://www.basketball-reference.com/leagues/NBA_{year}_per_game.html"
-        )
-
-        try:
-            playersDf = pd.read_html(proBasketballRefUrl)[0]
-            playersDf = playersDf[playersDf["Rk"] != "Rk"].fillna(0.0)
-            playersDf = playersDf.drop_duplicates(subset=["Player"], keep="first")
-            playersDf["Player"] = playersDf["Player"].apply(lambda x: unidecode(x))
+            playersDf = playersDf[playersDf["VBR"].notnull()]
+            playersDf = playersDf.drop(columns=["Unnamed: 17", "Unnamed: 18"], axis=1)
 
             return playersDf
 
@@ -92,30 +77,26 @@ class webScraper:
 
         async def main(self):
 
-            allPlayers = await self.getBasketballProjections("overall")
-            pointGuards = await self.getBasketballProjections("pg")
-            shootingGuards = await self.getBasketballProjections("sg")
-            smallForwards = await self.getBasketballProjections("sf")
-            powerForwards = await self.getBasketballProjections("pf")
-            centers = await self.getBasketballProjections("c")
-            guards = await self.getBasketballProjections("g")
-            forwards = await self.getBasketballProjections("f")
-            proBasketballRefStats = await self.getProBasketballReferenceStats("2023")
-            # espnLeague = await self.getEspnPlayers()
+            firstBase = await self.getBaseballProjections("1b")
+            secondBase = await self.getBaseballProjections("2b")
+            thirdBase = await self.getBaseballProjections("3b")
+            shortStop = await self.getBaseballProjections("ss")
+            catcher = await self.getBaseballProjections("c")
+            outfield = await self.getBaseballProjections("of")
+            startPitcher = await self.getBaseballProjections("sp")
+            reliefPitcher = await self.getBaseballProjections("rp")
+            designatedHit = await self.getBaseballProjections("dh")
 
             await asyncio.gather(
-                self.sendDataToPostgres(df=allPlayers, table_name="allPlayers"),
-                self.sendDataToPostgres(df=pointGuards, table_name="pointGuards"),
-                self.sendDataToPostgres(df=shootingGuards, table_name="shootingGuards"),
-                self.sendDataToPostgres(df=smallForwards, table_name="smallForwards"),
-                self.sendDataToPostgres(df=powerForwards, table_name="powerForwards"),
-                self.sendDataToPostgres(df=centers, table_name="centers"),
-                self.sendDataToPostgres(df=guards, table_name="guards"),
-                self.sendDataToPostgres(df=forwards, table_name="forwards"),
-                self.sendDataToPostgres(
-                    df=proBasketballRefStats, table_name="proBasketballRefStats"
-                ),
-                # self.sendDataToPostgres(df=espnLeague, table_name="espnLeague"),
+                self.sendDataToPostgres(df=firstBase, table_name="firstBase"),
+                self.sendDataToPostgres(df=secondBase, table_name="secondBase"),
+                self.sendDataToPostgres(df=thirdBase, table_name="thirdBase"),
+                self.sendDataToPostgres(df=shortStop, table_name="shortStop"),
+                self.sendDataToPostgres(df=catcher, table_name="catcher"),
+                self.sendDataToPostgres(df=outfield, table_name="outfield"),
+                self.sendDataToPostgres(df=startPitcher, table_name="startPitcher"),
+                self.sendDataToPostgres(df=reliefPitcher, table_name="reliefPitcher"),
+                self.sendDataToPostgres(df=designatedHit, table_name="designatedHit"),
             )
 
         asyncio.run(main(self))
