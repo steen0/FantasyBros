@@ -51,7 +51,7 @@ class fieldProcessing:
             "VBR": {"type": self.allFantasyBaseballFields, "dataType": INTEGER()},
             "Player": {"type": self.allFantasyBaseballFields, "dataType": VARCHAR(200)},
             "Team": {"type": self.allFantasyBaseballFields, "dataType": VARCHAR(10)},
-            "ROST%": {"type": self.allFantasyBaseballFields, "dataType": FLOAT()},
+            "ROST%": {"type": self.allFantasyBaseballFields, "dataType": VARCHAR(10)},
             "H": {"type": self.allFantasyBaseballFields, "dataType": FLOAT()},
             "BB": {"type": self.allFantasyBaseballFields, "dataType": FLOAT()},
             "HR": {"type": self.allFantasyBaseballFields, "dataType": FLOAT()},

@@ -1,36 +1,46 @@
-with point_guards as (
+with first_base as (
 	select *
-	from "staging"."pointGuards"
+	from "staging"."firstBase"
 	),
 
-shooting_guards as (
+second_base as (
 	select *
-	from "staging"."shootingGuards"
+	from "staging"."secondBase"
 	),
 
-small_forwards as (
+third_base as (
 	select *
-	from "staging"."smallForwards"
+	from "staging"."thirdBase"
 	),
 
-power_forwards as (
+short_stop as (
 	select *
-	from "staging"."powerForwards"
+	from "staging"."shortStop"
 	),
 
-centers as (
+catcher as (
 	select *
-	from "staging"."centers"
+	from "staging"."catcher"
 	),
 
-guards as (
+outfield as (
 	select *
-	from "staging"."guards"
+	from "staging"."outfield"
 	),
 
-forwards as (
+start_pitcher as (
 	select *
-	from "staging"."forwards"
+	from "staging"."startPitcher"
+	),
+
+relief_pitcher as (
+	select *
+	from "staging"."reliefPitcher"
+	),
+
+designated_hitter as (
+	select *
+	from "staging"."designatedHit"
 	),
 
 player_projections as (
