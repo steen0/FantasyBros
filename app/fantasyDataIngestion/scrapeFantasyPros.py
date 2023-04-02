@@ -83,8 +83,7 @@ class webScraper:
             shortStop = await self.getBaseballProjections("ss")
             catcher = await self.getBaseballProjections("c")
             outfield = await self.getBaseballProjections("of")
-            startPitcher = await self.getBaseballProjections("sp")
-            reliefPitcher = await self.getBaseballProjections("rp")
+            pitchers = await self.getBaseballProjections("pitchers")
             designatedHit = await self.getBaseballProjections("dh")
 
             await asyncio.gather(
@@ -94,8 +93,7 @@ class webScraper:
                 self.sendDataToPostgres(df=shortStop, table_name="shortStop"),
                 self.sendDataToPostgres(df=catcher, table_name="catcher"),
                 self.sendDataToPostgres(df=outfield, table_name="outfield"),
-                self.sendDataToPostgres(df=startPitcher, table_name="startPitcher"),
-                self.sendDataToPostgres(df=reliefPitcher, table_name="reliefPitcher"),
+                self.sendDataToPostgres(df=pitchers, table_name="pitchers"),
                 self.sendDataToPostgres(df=designatedHit, table_name="designatedHit"),
             )
 

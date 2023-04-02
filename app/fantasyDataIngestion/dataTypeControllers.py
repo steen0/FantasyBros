@@ -25,8 +25,7 @@ class fieldProcessing:
             "shortStop",
             "catcher",
             "outfield",
-            "startPitcher",
-            "reliefPitcher",
+            "pitchers",
             "designatedHit",
         ]
 
@@ -40,10 +39,7 @@ class fieldProcessing:
             "designatedHit",
         ]
 
-        self.pitchers = [
-            "startPitcher",
-            "reliefPitcher",
-        ]
+        self.pitchers = ["pitchers"]
 
         # List of all fields available in scraped dataframes
         self.fields = {
