@@ -1,47 +1,203 @@
 with first_base as (
-	select *
+	select "Player" as player
+		,"Team" as team
+		,"AB" as hitter_ab
+		,"R" as hitter_r
+		,"HR" as hitter_hr
+		,"RBI" as hitter_rbi
+		,"SB" as hitter_sb
+		,"AVG" as hitter_avg
+		,"OBP" as hitter_obp
+		,"H" as hitter_h
+		,"2B" as hitter_2b
+		,"3B" as hitter_3b
+		,"BB" as hitter_bb
+		,"SO" as hitter_so
+		,"SLG" as hitter_slg
+		,"OPS" as hitter_ops
 	from "staging"."firstBase"
 	),
 
 second_base as (
-	select *
+	select "Player" as player
+		,"Team" as team
+		,"AB" as hitter_ab
+		,"R" as hitter_r
+		,"HR" as hitter_hr
+		,"RBI" as hitter_rbi
+		,"SB" as hitter_sb
+		,"AVG" as hitter_avg
+		,"OBP" as hitter_obp
+		,"H" as hitter_h
+		,"2B" as hitter_2b
+		,"3B" as hitter_3b
+		,"BB" as hitter_bb
+		,"SO" as hitter_so
+		,"SLG" as hitter_slg
+		,"OPS" as hitter_ops
 	from "staging"."secondBase"
 	),
 
 third_base as (
-	select *
+	select "Player" as player
+		,"Team" as team
+		,"AB" as hitter_ab
+		,"R" as hitter_r
+		,"HR" as hitter_hr
+		,"RBI" as hitter_rbi
+		,"SB" as hitter_sb
+		,"AVG" as hitter_avg
+		,"OBP" as hitter_obp
+		,"H" as hitter_h
+		,"2B" as hitter_2b
+		,"3B" as hitter_3b
+		,"BB" as hitter_bb
+		,"SO" as hitter_so
+		,"SLG" as hitter_slg
+		,"OPS" as hitter_ops
 	from "staging"."thirdBase"
 	),
 
 short_stop as (
-	select *
+	select "Player" as player
+		,"Team" as team
+		,"AB" as hitter_ab
+		,"R" as hitter_r
+		,"HR" as hitter_hr
+		,"RBI" as hitter_rbi
+		,"SB" as hitter_sb
+		,"AVG" as hitter_avg
+		,"OBP" as hitter_obp
+		,"H" as hitter_h
+		,"2B" as hitter_2b
+		,"3B" as hitter_3b
+		,"BB" as hitter_bb
+		,"SO" as hitter_so
+		,"SLG" as hitter_slg
+		,"OPS" as hitter_ops
 	from "staging"."shortStop"
 	),
 
 catcher as (
-	select *
+	select "Player" as player
+		,"Team" as team
+		,"AB" as hitter_ab
+		,"R" as hitter_r
+		,"HR" as hitter_hr
+		,"RBI" as hitter_rbi
+		,"SB" as hitter_sb
+		,"AVG" as hitter_avg
+		,"OBP" as hitter_obp
+		,"H" as hitter_h
+		,"2B" as hitter_2b
+		,"3B" as hitter_3b
+		,"BB" as hitter_bb
+		,"SO" as hitter_so
+		,"SLG" as hitter_slg
+		,"OPS" as hitter_ops
 	from "staging"."catcher"
 	),
 
 outfield as (
-	select *
+	select "Player" as player
+		,"Team" as team
+		,"AB" as hitter_ab
+		,"R" as hitter_r
+		,"HR" as hitter_hr
+		,"RBI" as hitter_rbi
+		,"SB" as hitter_sb
+		,"AVG" as hitter_avg
+		,"OBP" as hitter_obp
+		,"H" as hitter_h
+		,"2B" as hitter_2b
+		,"3B" as hitter_3b
+		,"BB" as hitter_bb
+		,"SO" as hitter_so
+		,"SLG" as hitter_slg
+		,"OPS" as hitter_ops
 	from "staging"."outfield"
 	),
 
 start_pitcher as (
-	select *
+	select "Player" as player
+		,"Team" as team
+		,"IP" as pitcher_ip
+		,"K" as pitcher_k
+		,"W" as pitcher_w
+		,"L" as pitcher_l
+		,"ERA" as pitcher_era
+		,"WHIP" as pitcher_whip
+		,"ER" as pitcher_er
+		,"H" as pitcher_h
+		,"BB" as pitcher_bb
+		,"HR" as pitcher_hr
+		,"G" as pitcher_g
+		,"GS" as pitcher_gs
+		,"QS" as pitcher_qs
+		,"CG" as pitcher_cg
 	from "staging"."startPitcher"
 	),
 
 relief_pitcher as (
-	select *
+	select "Player" as player
+		,"Team" as team
+		,"IP" as pitcher_ip
+		,"K" as pitcher_k
+		,"SV" as pitcher_sv
+		,"BS" as pitcher_sv
+		,"HD" as pitcher_sv
+		,"ERA" as pitcher_era
+		,"WHIP" as pitcher_whip
+		,"ER" as pitcher_er
+		,"H" as pitcher_h
+		,"BB" as pitcher_bb
+		,"HR" as pitcher_hr
+		,"G" as pitcher_g
+		,"W" as pitcher_w
+		,"L" as pitcher_l
 	from "staging"."reliefPitcher"
 	),
 
 designated_hitter as (
-	select *
+	select "Player" as player
+		,"Team" as team
+		,"AB" as hitter_ab
+		,"R" as hitter_r
+		,"HR" as hitter_hr
+		,"RBI" as hitter_rbi
+		,"SB" as hitter_sb
+		,"AVG" as hitter_avg
+		,"OBP" as hitter_obp
+		,"H" as hitter_h
+		,"2B" as hitter_2b
+		,"3B" as hitter_3b
+		,"BB" as hitter_bb
+		,"SO" as hitter_so
+		,"SLG" as hitter_slg
+		,"OPS" as hitter_ops
 	from "staging"."designatedHit"
 	),
+	
+
+--need to change these below to unions for hitters/pitchers
+select *
+from player_names
+left join first_base on player_names."player"=first_base."player"
+left join second_base on player_names."player"=second_base."player"
+left join third_base on player_names."player"=third_base."player"
+left join short_stop on player_names."player"=short_stop."player"
+left join catcher on player_names."player"=catcher."player"
+left join outfield on player_names."player"=outfield."player"
+left join start_pitcher on player_names."player"=start_pitcher."player"
+left join relief_pitcher on player_names."player"=relief_pitcher."player"
+left join designated_hitter on player_names."player"=designated_hitter."player"
+where player_names."player" like '%Shohei%'
+
+
+
+
+
+
 
 player_projections as (
 	select ap."Player" as player
