@@ -17,7 +17,7 @@ default_args = {
 
 # Initializing dag
 dag = DAG(
-    "fantasyBrosBasketballDag", default_args=default_args, schedule_interval="@daily"
+    "fantasyBrosBaseballDag", default_args=default_args, schedule_interval="@daily"
 )
 
 # Calling web scraping class from fantasyDataIngestion module
@@ -28,29 +28,29 @@ scrapeFantasyProsData = PythonOperator(
 )
 
 # Bash command for dim_players dbt model
-loadBasketballPlayers = BashOperator(
-    task_id="loadBasketballPlayers",
+loadBaseballPlayers = BashOperator(
+    task_id="loadBaseballPlayers",
     bash_command="cd /dbt/fantasyBrosDbt && dbt run --select dim_players --profiles-dir .",
     dag=dag,
 )
 
 # Bash command for dim_players_history dbt model
-loadBasketballPlayerHistory = BashOperator(
-    task_id="loadBasketballPlayerHistory",
+loadBaseballPlayerHistory = BashOperator(
+    task_id="loadBaseballPlayerHistory",
     bash_command="cd /dbt/fantasyBrosDbt && dbt run --select dim_players_history --profiles-dir .",
     dag=dag,
 )
 
 # Bash command for dim_benchmarks dbt model
-basketballPlayerBenchmarks = BashOperator(
-    task_id="basketballPlayerBenchmarks",
+baseballPlayerBenchmarks = BashOperator(
+    task_id="baseballPlayerBenchmarks",
     bash_command="cd /dbt/fantasyBrosDbt && dbt run --select dim_benchmarks --profiles-dir .",
     dag=dag,
 )
 
 # Bash command for fact_valuations dbt model
-basketballPlayerValuations = BashOperator(
-    task_id="basketballPlayerValuations",
+baseballPlayerValuations = BashOperator(
+    task_id="baseballPlayerValuations",
     bash_command="cd /dbt/fantasyBrosDbt && dbt run --select fact_valuations --profiles-dir .",
     dag=dag,
 )
@@ -59,7 +59,7 @@ basketballPlayerValuations = BashOperator(
 # Setting task order for ELT workflow
 (
     scrapeFantasyProsData
-    # >> loadBasketballPlayers
-    # >> [loadBasketballPlayerHistory, basketballPlayerBenchmarks]
-    # >> basketballPlayerValuations
+    >> loadBaseballPlayers
+    >> [loadBaseballPlayerHistory, baseballPlayerBenchmarks]
+    >> baseballPlayerValuations
 )
