@@ -1,45 +1,79 @@
-with flex_benchmark as (
-	select *
-	from "analysis"."dim_benchmarks"
-	where "pos" = 'ALL'
-	),
-
-player_benchmarks as (
+with player_benchmarks as (
 	select players."player"
 		,players."team"
-		,players."pos_pg"
-		,players."pos_sg"
-		,players."pos_sf"
-		,players."pos_pf"
+		,players."pos_1b"
+		,players."pos_2b"
+		,players."pos_3b"
+		,players."pos_ss"
 		,players."pos_c"
-		,players."pos_g"
-		,players."pos_f"
+		,players."pos_of"
+		,players."pos_dh"
+		,players."pos_p"
 		,players."proj_fantasy_pts"
-		,pg_bench."proj_benchmark_pts" as pg_benchmark_pts
-		,sg_bench."proj_benchmark_pts" as sg_benchmark_pts
-		,sf_bench."proj_benchmark_pts" as sf_benchmark_pts
-		,pf_bench."proj_benchmark_pts" as pf_benchmark_pts
-		,c_bench."proj_benchmark_pts" as c_benchmark_pts
-		,g_bench."proj_benchmark_pts" as g_benchmark_pts
-		,f_bench."proj_benchmark_pts" as f_benchmark_pts
-		,flex_benchmark."proj_benchmark_pts" as all_pos_benchmark_pts
-		,players."proj_fantasy_pts" - pg_bench."proj_benchmark_pts" as value_over_pg
-		,players."proj_fantasy_pts" - sg_bench."proj_benchmark_pts" as value_over_sg
-		,players."proj_fantasy_pts" - sf_bench."proj_benchmark_pts" as value_over_sf
-		,players."proj_fantasy_pts" - pf_bench."proj_benchmark_pts" as value_over_pf
-		,players."proj_fantasy_pts" - c_bench."proj_benchmark_pts" as value_over_c
-		,players."proj_fantasy_pts" - g_bench."proj_benchmark_pts" as value_over_g
-		,players."proj_fantasy_pts" - f_bench."proj_benchmark_pts" as value_over_f
-		,players."proj_fantasy_pts" - flex_benchmark."proj_benchmark_pts" as value_over_all_pos
+		,first_base_bench."proj_benchmark_pts" as pos_1b_bench_pts
+		,second_base_bench."proj_benchmark_pts" as pos_2b_bench_pts
+		,third_base_bench."proj_benchmark_pts" as pos_3b_bench_pts
+		,short_stop_bench."proj_benchmark_pts" as pos_ss_bench_pts
+		,catcher_bench."proj_benchmark_pts" as pos_c_bench_pts
+		,outfield_bench."proj_benchmark_pts" as pos_of_bench_pts
+		,designated_hitter_bench."proj_benchmark_pts" as pos_dh_bench_pts
+		,pitcher_bench."proj_benchmark_pts" as pos_p_bench_pts
+		,utility_bench."proj_benchmark_pts" as pos_utility_bench_pts
+		,CASE
+			WHEN players."pos_1b" = 1
+			THEN players."proj_fantasy_pts" - first_base_bench."proj_benchmark_pts"
+			ELSE null
+			END AS value_over_1b
+		,CASE
+			WHEN players."pos_2b" = 1
+			THEN players."proj_fantasy_pts" - second_base_bench."proj_benchmark_pts"
+			ELSE null
+			END as value_over_2b
+		,CASE
+			WHEN players."pos_3b" = 1
+			THEN players."proj_fantasy_pts" - third_base_bench."proj_benchmark_pts"
+			ELSE null
+			END as value_over_3b
+		,CASE
+			WHEN players."pos_ss" = 1
+			THEN players."proj_fantasy_pts" - short_stop_bench."proj_benchmark_pts"
+			ELSE null
+			END as value_over_ss
+		,CASE
+			WHEN players."pos_c" = 1
+			THEN players."proj_fantasy_pts" - catcher_bench."proj_benchmark_pts"
+			ELSE null
+			END as value_over_c
+		,CASE
+			WHEN players."pos_of" = 1
+			THEN players."proj_fantasy_pts" - outfield_bench."proj_benchmark_pts"
+			ELSE null
+			END as value_over_of
+		,CASE
+			WHEN players."pos_dh" = 1
+			THEN players."proj_fantasy_pts" - designated_hitter_bench."proj_benchmark_pts"
+			ELSE null
+			END as value_over_dh
+		,CASE
+			WHEN players."pos_p" = 1
+			THEN players."proj_fantasy_pts" - pitcher_bench."proj_benchmark_pts"
+			ELSE null
+			END as value_over_p
+		,CASE
+			WHEN ((players."pos_1b" + players."pos_2b" + players."pos_3b" + players."pos_ss" + players."pos_c" + players."pos_of") > 0)
+			THEN players."proj_fantasy_pts" - utility_bench."proj_benchmark_pts"
+			ELSE null
+			END as value_over_utility
 	from "analysis"."dim_players" players
-	left join "analysis"."dim_benchmarks" as pg_bench on ((players."pos_pg"=1) and (pg_bench."pos"='PG'))
-	left join "analysis"."dim_benchmarks" as sg_bench on ((players."pos_sg"=1) and (sg_bench."pos"='SG'))
-	left join "analysis"."dim_benchmarks" as sf_bench on ((players."pos_sf"=1) and (sf_bench."pos"='SF'))
-	left join "analysis"."dim_benchmarks" as pf_bench on ((players."pos_pf"=1) and (pf_bench."pos"='PF'))
-	left join "analysis"."dim_benchmarks" as c_bench on ((players."pos_c"=1) and (c_bench."pos"='C'))
-	left join "analysis"."dim_benchmarks" as g_bench on ((players."pos_g"=1) and (g_bench."pos"='G'))
-	left join "analysis"."dim_benchmarks" as f_bench on ((players."pos_f"=1) and (f_bench."pos"='F'))
-	cross join flex_benchmark
+	left join "analysis"."dim_benchmarks" as first_base_bench on ((players."pos_1b"=1) and (first_base_bench."pos"='1B'))
+	left join "analysis"."dim_benchmarks" as second_base_bench on ((players."pos_2b"=1) and (second_base_bench."pos"='2B'))
+	left join "analysis"."dim_benchmarks" as third_base_bench on ((players."pos_3b"=1) and (third_base_bench."pos"='3B'))
+	left join "analysis"."dim_benchmarks" as short_stop_bench on ((players."pos_ss"=1) and (short_stop_bench."pos"='SS'))
+	left join "analysis"."dim_benchmarks" as catcher_bench on ((players."pos_c"=1) and (catcher_bench."pos"='C'))
+	left join "analysis"."dim_benchmarks" as outfield_bench on ((players."pos_of"=1) and (outfield_bench."pos"='OF'))
+	left join "analysis"."dim_benchmarks" as designated_hitter_bench on ((players."pos_dh"=1) and (designated_hitter_bench."pos"='DH'))
+	left join "analysis"."dim_benchmarks" as pitcher_bench on ((players."pos_p"=1) and (pitcher_bench."pos"='P'))
+	left join "analysis"."dim_benchmarks" as utility_bench on (((players."pos_1b" + players."pos_2b" + players."pos_3b" + players."pos_ss" + players."pos_c" + players."pos_of") > 0) and (f_bench."pos"='U'))
 	),
 	
 projections_over_time as (

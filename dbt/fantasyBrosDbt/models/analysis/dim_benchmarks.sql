@@ -6,31 +6,31 @@ with first_base_bench as (
 	where players."pos_1b" = 1
 	),
 	
-sg_bench as (
-	select 'SG' as pos
+second_base_bench as (
+	select '2B' as pos
 		,players."proj_fantasy_pts" as proj_benchmark_pts
 		,DENSE_RANK() over (order by players."proj_fantasy_pts" desc) as rank_by_proj
 	from "analysis"."dim_players" players
-	where players."pos_sg" = 1
+	where players."pos_2b" = 1
 	),
 	
-sf_bench as (
-	select 'SF' as pos
+third_base_bench as (
+	select '3B' as pos
 		,players."proj_fantasy_pts" as proj_benchmark_pts
 		,DENSE_RANK() over (order by players."proj_fantasy_pts" desc) as rank_by_proj
 	from "analysis"."dim_players" players
-	where players."pos_sf" = 1
+	where players."pos_3b" = 1
 	),
 	
-pf_bench as (
-	select 'PF' as pos
+short_stop_bench as (
+	select 'SS' as pos
 		,players."proj_fantasy_pts" as proj_benchmark_pts
 		,DENSE_RANK() over (order by players."proj_fantasy_pts" desc) as rank_by_proj
 	from "analysis"."dim_players" players
-	where players."pos_pf" = 1
+	where players."pos_ss" = 1
 	),
 	
-c_bench as (
+catcher_bench as (
 	select 'C' as pos
 		,players."proj_fantasy_pts" as proj_benchmark_pts
 		,DENSE_RANK() over (order by players."proj_fantasy_pts" desc) as rank_by_proj
@@ -38,61 +38,77 @@ c_bench as (
 	where players."pos_c" = 1
 	),
 	
-g_bench as (
-	select 'G' as pos
+outfield_bench as (
+	select 'OF' as pos
 		,players."proj_fantasy_pts" as proj_benchmark_pts
 		,DENSE_RANK() over (order by players."proj_fantasy_pts" desc) as rank_by_proj
 	from "analysis"."dim_players" players
-	where players."pos_g" = 1
+	where players."pos_of" = 1
 	),
 	
-f_bench as (
-	select 'F' as pos
+designated_hitter_bench as (
+	select 'DH' as pos
 		,players."proj_fantasy_pts" as proj_benchmark_pts
 		,DENSE_RANK() over (order by players."proj_fantasy_pts" desc) as rank_by_proj
 	from "analysis"."dim_players" players
-	where players."pos_f" = 1
+	where players."pos_dh" = 1
+	),
+	
+pitcher_bench as (
+	select 'P' as pos
+		,players."proj_fantasy_pts" as proj_benchmark_pts
+		,DENSE_RANK() over (order by players."proj_fantasy_pts" desc) as rank_by_proj
+	from "analysis"."dim_players" players
+	where players."pos_1b" = 1
 	),
 
-all_bench as (
-	select 'ALL' as pos
+utility_bench as (
+	select 'U' as pos
 		,players."proj_fantasy_pts" as proj_benchmark_pts
 		,DENSE_RANK() over (order by players."proj_fantasy_pts" desc) as rank_by_proj
 	from "analysis"."dim_players" players
+	where players."pos_1b" = 1
+	or players."pos_2b" = 1
+	or players."pos_3b" = 1
+	or players."pos_ss" = 1
+	or players."pos_c" = 1
+	or players."pos_of" = 1
+	or players."pos_dh" = 1
+	or players."pos_p" = 1
 	),
 	
 total_bench as (
 	select *
-	from pg_bench
-	where pg_bench."rank_by_proj" = 11
+	from first_base_bench
+	where first_base_bench."rank_by_proj" = 11
 	union
 	select *
-	from sg_bench
-	where sg_bench."rank_by_proj" = 11
+	from second_base_bench
+	where second_base_bench."rank_by_proj" = 11
 	union
 	select *
-	from sf_bench
-	where sf_bench."rank_by_proj" = 11
+	from third_base_bench
+	where third_base_bench."rank_by_proj" = 11
 	union
 	select *
-	from pf_bench
-	where pf_bench."rank_by_proj" = 11
+	from short_stop_bench
+	where short_stop_bench."rank_by_proj" = 11
 	union
 	select *
-	from c_bench
-	where c_bench."rank_by_proj" = 11
+	from catcher_bench
+	where catcher_bench."rank_by_proj" = 11
 	union
 	select *
-	from g_bench
-	where g_bench."rank_by_proj" = 11
+	from outfield_bench
+	where outfield_bench."rank_by_proj" = 31
 	union
 	select *
-	from f_bench
-	where f_bench."rank_by_proj" = 11
+	from pitcher_bench
+	where pitcher_bench."rank_by_proj" = 51
 	union
 	select *
-	from all_bench
-	where all_bench."rank_by_proj" = 51
+	from utility_bench
+	where utility_bench."rank_by_proj" = 11
 	)
 	
 select total_bench."pos"
